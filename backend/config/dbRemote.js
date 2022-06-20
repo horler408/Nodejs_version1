@@ -2,14 +2,10 @@ const mongoose = require('mongoose');
 
 const dbConnect = () => {
   mongoose
-    .connect(
-      'mongodb+srv://arseling:UhXoJsWXNbNNjgGk@cluster0.nnle7.mongodb.net/nodejs_version1?retryWrites=true&w=majority',
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-      }
-    )
+    .connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
     .then(() => {
       console.log('Successfully connected to MongoDB Atlas!');
     })
