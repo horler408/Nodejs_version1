@@ -6,6 +6,15 @@ const Product = require('../../models/productModel');
 // @route   GET /api/product
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
+  const { category } = req.query;
+
+  if (category) {
+    const products = await Product.find().filter((product) =>
+      product.toLowerCase().includes(category)
+    );
+    res.json(products);
+  }
+
   const products = await Product.find();
   res.json(products);
 });
