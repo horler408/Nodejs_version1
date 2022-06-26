@@ -38,14 +38,15 @@ const getProduct = asyncHandler(async (req, res) => {
 //@route           GET /api/products/create
 //@access          Private
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, description, category, price } = req.body;
+  const { name, description, category, price, user } = req.body;
 
   if (!name || !description || !category || !price) {
     res.status(400);
     throw new Error('Please Fill all the feilds');
   } else {
     const newProduct = new Product({
-      user: req.user._id,
+      //   user: req.user._id,
+      user,
       name,
       description,
       category,

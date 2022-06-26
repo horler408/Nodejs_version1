@@ -17,12 +17,19 @@ const productSchema = mongoose.Schema(
     price: {
       type: Number,
       required: true,
+      min: 0,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
     },
+    categories: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: 'Category',
+      },
+    ],
   },
   {
     timestamps: true,

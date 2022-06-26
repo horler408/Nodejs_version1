@@ -5,6 +5,7 @@ const path = require('path');
 
 const userRoute = require('./v1/routes/userRoute.js');
 const productRoute = require('./v1/routes/productRoute.js');
+const orderRoute = require('./v1/routes/orderRoute.js');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware.js');
 const dbConnect = require('./config/db.js');
 const cors = require('./config/cors');
@@ -20,8 +21,9 @@ app.use(bodyParser.json());
 
 app.use(cors);
 
-app.use('/api/users/v1', userRoute);
-app.use('/api/products/v1', productRoute);
+app.use('/api/v1/users', userRoute);
+app.use('/api/v1/products', productRoute);
+app.use('/api/v1/orders', orderRoute);
 
 // --------------------------deployment------------------------------
 // const __dirname = path.resolve();
