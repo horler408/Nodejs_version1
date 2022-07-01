@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 const User = require('../models/userModel.js');
 
-const protect = asyncHandler(async (req, res, next) => {
+const auth = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
@@ -21,14 +21,14 @@ const protect = asyncHandler(async (req, res, next) => {
       next();
     } catch (error) {
       res.status(401);
-      throw new Error('Not authorized, token failed');
+      throw new Error('Authorization failed!');
     }
   }
 
   if (!token) {
     res.status(401);
-    throw new Error('Not authorized, no token');
+    throw new Error('Not authorized to access this resource');
   }
 });
 
-module.exports = { protect };
+module.exports = { auth };

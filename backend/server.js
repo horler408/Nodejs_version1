@@ -6,6 +6,8 @@ const path = require('path');
 const userRoute = require('./v1/routes/userRoute.js');
 const productRoute = require('./v1/routes/productRoute.js');
 const orderRoute = require('./v1/routes/orderRoute.js');
+const productRouteV2 = require('./v2/routes/productRoute');
+const categoryRouteV2 = require('./v2/routes/categoryRoute');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware.js');
 const dbConnect = require('./config/db.js');
 const cors = require('./config/cors');
@@ -25,6 +27,9 @@ app.use('/api/v1/users', userRoute);
 app.use('/api/v1/products', productRoute);
 app.use('/api/v1/orders', orderRoute);
 
+// Version 2 routes
+app.use('/api/v2/products', productRouteV2);
+app.use('/api/v2/categories', categoryRouteV2);
 // --------------------------deployment------------------------------
 // const __dirname = path.resolve();
 

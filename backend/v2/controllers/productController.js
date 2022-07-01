@@ -1,6 +1,11 @@
 const Product = require('../../models/productModel');
 const Category = require('../../models/categoryModel');
 
+const getProducts = async (req, res) => {
+  const products = await Product.find();
+  res.json(products);
+};
+
 const createProduct =
   ('/',
   async (req, res) => {
@@ -67,4 +72,4 @@ const updateProduct =
     return res.send(newProduct);
   });
 
-module.exports = { createProduct, updateProduct, removeProduct };
+module.exports = { getProducts, createProduct, updateProduct, removeProduct };
