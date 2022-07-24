@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-//MongoDb password: azolayu
 const dbConnect = () => {
   mongoose.connect('mongodb://localhost:27017/version1Db', {
     useNewUrlParser: true,

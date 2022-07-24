@@ -11,6 +11,9 @@
 # production
 /build
 
+# practice redux
+/todo_app
+
 # misc
 .DS_Store
 .env.local
