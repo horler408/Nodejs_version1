@@ -12,7 +12,8 @@
 /build
 
 # practice redux
-/todo_app
+/src/todo_app
+/src/context
 
 # misc
 .DS_Store

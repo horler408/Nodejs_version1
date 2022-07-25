@@ -38,3 +38,12 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
