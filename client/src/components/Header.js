@@ -9,18 +9,21 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {} from 'react-router-dom';
-// import { logout } from '../actions/userActions';
+import { useNavigate } from 'react-router-dom';
+
+import { logout } from '../actions/userActions';
 
 function Header({ setSearch }) {
-  //   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const logoutHandler = (e) => {
-    localStorage.removeItem('userInfo');
-    // const history = useHistory();
-    // dispatch(logout());
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate('/');
   };
 
   useEffect(() => {}, [userInfo]);

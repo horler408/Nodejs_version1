@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-roter-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import MainPage from '../components/MainPage';
-import Loading from '../components/Loading';
+import MainPage from '../../components/MainPage';
+import Loading from '../../components/Loading';
 import { login } from '../../actions/userActions';
 
 import './loginPage.css';
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from '../../components/ErrorMessage';
 
-export const LoginPage = ({ history }) => {
+const LoginPage = ({ navigate }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,26 +26,27 @@ export const LoginPage = ({ history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.pushState('/landingPage');
+      navigate('/landingPage');
     }
-  }, [history, userInfo]);
+  }, [navigate, userInfo]);
 
   return (
     <MainPage title="LOGIN">
-      <div classname="loginContainer">
+      <div className="login-container">
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
-        <form onSubmit={submitHandler}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email Address</Form.Label>
+        <Form onSubmit={submitHandler}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
               value={email}
-              placeholder="Enter Email"
+              placeholder="Enter email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
-          <Form.Group controlId="formBasicPassword">
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -53,9 +54,20 @@ export const LoginPage = ({ history }) => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
-          </Form.Group>{' '}
-        </form>
+          </Form.Group>
+
+          <Button className="mb-3" variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+        <Row className="py-3">
+          <Col>
+            New Customer ? <Link to="/register">Register Here</Link>
+          </Col>
+        </Row>
       </div>
     </MainPage>
   );
 };
+
+export default LoginPage;

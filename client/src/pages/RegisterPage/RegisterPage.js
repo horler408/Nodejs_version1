@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainPage from '../../components/MainPage';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-roter-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 import './register.css';
+import { register } from '../../actions/userActions';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -17,8 +19,13 @@ const RegisterPage = () => {
   const [confirmpassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
   const [picMessage, setPicMessage] = useState(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, userInfo } = userRegister;
+
+  const navigate = useNavigate();
 
   const postDetails = (pics) => {
     if (
@@ -31,9 +38,9 @@ const RegisterPage = () => {
     if (pics.type === 'image/jpeg' || pics.type === 'image/png') {
       const data = new FormData();
       data.append('file', pics);
-      data.append('upload_preset', 'notezipper');
-      data.append('cloud_name', 'piyushproj');
-      fetch('https://api.cloudinary.com/v1_1/piyushproj/image/upload', {
+      data.append('upload_preset', 'notestutorial');
+      data.append('cloud_name', 'horlertech');
+      fetch('https://api.cloudinary.com/v1_1/horlertech/image/upload', {
         method: 'post',
         body: data,
       })
@@ -49,96 +56,86 @@ const RegisterPage = () => {
     }
   };
 
-  const submitHandler = async (e) => {
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+    }
+  }, [navigate, userInfo]);
+
+  const submitHandler = (e) => {
     e.preventDefault();
 
     if (password !== confirmpassword) {
       setMessage('Passwords do not match');
-    } else {
-      setMessage(null);
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'applications/json',
-          },
-        };
-        const info = { name, email, password, pic };
-
-        setLoading(true);
-
-        const { data } = await axios.post('/api/v1/users', info, config);
-
-        setLoading(false);
-        localStorage.setItem('userInfo', JSON.stringify(data));
-      } catch (err) {
-        setError(err.response.data.message);
-      }
-    }
-    console.log(email);
+    } else dispatch(register(name, email, password, pic));
   };
 
   return (
     <MainPage title="REGISTER">
-      <div className="loginContainer">
+      <div className="register-container">
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              value={name}
-              placeholder="Enter name"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Form.Group>
+          <Row className="mb-3">
+            <Form.Group as={Col} md="6" controlId="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="name"
+                value={name}
+                placeholder="Enter name"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group as={Col} md="6" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+          </Row>
 
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
+          <Row className="mb-3">
+            <Form.Group as={Col} md="6" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={confirmpassword}
-              placeholder="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group as={Col} md="6" controlId="confirmPassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                value={confirmpassword}
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </Form.Group>
+          </Row>
 
           {picMessage && (
             <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
           )}
           <Form.Group controlId="pic">
             <Form.Label>Profile Picture</Form.Label>
-            <Form.File
+            <Form.Control
               onChange={(e) => postDetails(e.target.files[0])}
               id="custom-file"
-              type="image/png"
+              type="file"
               label="Upload Profile Picture"
               custom
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button className="mt-3" variant="primary" type="submit">
             Register
           </Button>
         </Form>

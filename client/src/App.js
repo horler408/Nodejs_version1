@@ -1,11 +1,15 @@
-import { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import LandingPage from './pages/landingPage/LandingPage';
-// const Landing = lazy(()=> import('./components/MainPage'));
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import CreateNote from './pages/CreateNote/CreateNote';
+import MyNotes from './pages/myNotes/MyNotes';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+// const MyNotes = React.lazy(() => import('./pages/myNotes/MyNotes'));
+// const LandingPage = React.lazy(() => import('./pages/landingPage/LandingPage'));
 
 function App() {
   // const [search setSearch] = useState('')
@@ -14,10 +18,13 @@ function App() {
       <Header />
       <main className="App">
         <Routes>
-          <Route path="/" component={LandingPage} exact />
+          <Route path="/" element={<LandingPage />} exact />
+          <Route path="/register" element={<RegisterPage exact />} />
+          <Route path="/login" element={<LoginPage exact />} />
+          <Route path="/createnote" element={<CreateNote />} exact />
+          <Route path="/notes" element={() => <MyNotes />} exact />
         </Routes>
       </main>
-      <Footer />
     </Router>
   );
 }
