@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import MainPage from '../../components/MainScreen';
+import MainPage from '../../components/MainPage';
 import axios from 'axios';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteNoteAction, updateNoteAction } from '../../actions/notesActions';
+import { deleteNoteAction, updateNoteAction } from '../../actions/noteActions';
 import ErrorMessage from '../../components/ErrorMessage';
 import Loading from '../../components/Loading';
 import ReactMarkdown from 'react-markdown';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function SingleNote({ match, history }) {
+function SingleNote() {
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [category, setCategory] = useState();
   const [date, setDate] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const noteUpdate = useSelector((state) => state.noteUpdate);
   const { loading, error } = noteUpdate;
@@ -26,12 +29,12 @@ function SingleNote({ match, history }) {
     if (window.confirm('Are you sure?')) {
       dispatch(deleteNoteAction(id));
     }
-    history.push('/mynotes');
+    navigate('/mynotes');
   };
 
   useEffect(() => {
     const fetching = async () => {
-      const { data } = await axios.get(`/api/notes/${match.params.id}`);
+      const { data } = await axios.get(`/api/v1/notes/${id}`);
 
       setTitle(data.title);
       setContent(data.content);
@@ -40,7 +43,7 @@ function SingleNote({ match, history }) {
     };
 
     fetching();
-  }, [match.params.id, date]);
+  }, [id, date]);
 
   const resetHandler = () => {
     setTitle('');
@@ -50,11 +53,11 @@ function SingleNote({ match, history }) {
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(updateNoteAction(match.params.id, title, content, category));
     if (!title || !content || !category) return;
+    dispatch(updateNoteAction(id, title, content, category));
 
     resetHandler();
-    history.push('/mynotes');
+    navigate('/mynotes');
   };
 
   return (
@@ -113,7 +116,7 @@ function SingleNote({ match, history }) {
             <Button
               className="mx-2"
               variant="danger"
-              onClick={() => deleteHandler(match.params.id)}
+              onClick={() => deleteHandler(id)}
             >
               Delete Note
             </Button>

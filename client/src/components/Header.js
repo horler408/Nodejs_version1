@@ -23,7 +23,7 @@ function Header({ setSearch }) {
 
   const logoutHandler = () => {
     dispatch(logout());
-    navigate('/');
+    navigate('/logout');
   };
 
   useEffect(() => {}, [userInfo]);

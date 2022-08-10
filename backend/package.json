@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm start\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,6 @@
     "react-bootstrap": "^2.4.0"
   },
   "devDependencies": {
-    "concurrently": "^7.2.2"
+    "concurrently": "^7.3.0"
   }
 }

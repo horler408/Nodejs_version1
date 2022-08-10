@@ -15,6 +15,9 @@
 /src/todo_app
 /src/context
 
+# testing formik
+/src/components/formik
+
 # misc
 .DS_Store
 .env.local

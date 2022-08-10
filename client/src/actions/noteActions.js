@@ -31,7 +31,7 @@ export const listNotesAction = () => async (dispatch, getstate) => {
     };
 
     const { data } = await axios.get('/api/v1/notes', config);
-
+    console.log(data);
     dispatch({
       type: NOTE_LIST_SUCCESS,
       payload: data,
@@ -104,7 +104,7 @@ export const deleteNoteAction = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/notes/${id}`, config);
+    const { data } = await axios.delete(`/api/v1/notes/${id}`, config);
 
     dispatch({
       type: NOTE_DELETE_SUCCESS,
@@ -141,7 +141,7 @@ export const updateNoteAction =
       };
 
       const { data } = await axios.put(
-        `/api/notes/${id}`,
+        `/api/v1/notes/${id}`,
         { title, content, category },
         config
       );

@@ -22,12 +22,12 @@ function MyNotes({ navigate, search }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  //   const noteDelete = useSelector((state) => state.noteDelete);
-  //   const {
-  //     loading: loadingDelete,
-  //     error: errorDelete,
-  //     success: successDelete,
-  //   } = noteDelete;
+  const noteDelete = useSelector((state) => state.noteDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = noteDelete;
 
   const noteCreate = useSelector((state) => state.noteCreate);
   const { success: successCreate } = noteCreate;
@@ -44,7 +44,7 @@ function MyNotes({ navigate, search }) {
     dispatch,
     navigate,
     userInfo,
-    // successDelete,
+    successDelete,
     successCreate,
     successUpdate,
   ]);
@@ -57,18 +57,17 @@ function MyNotes({ navigate, search }) {
 
   return (
     <MainPage title={`Welcome Back ${userInfo && userInfo.name}..`}>
-      {console.log(notes)}
       <Link to="/createnote">
         <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
           Create new Note
         </Button>
       </Link>
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-      {/* {errorDelete && (
+      {errorDelete && (
         <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
-      )} */}
+      )}
       {loading && <Loading />}
-      {/* {loadingDelete && <Loading />} */}
+      {loadingDelete && <Loading />}
       {notes &&
         notes
           .filter((filteredNote) =>
@@ -76,7 +75,7 @@ function MyNotes({ navigate, search }) {
           )
           .reverse()
           .map((note) => (
-            <Accordion>
+            <Accordion flush>
               <Card style={{ margin: 10 }} key={note._id}>
                 <Card.Header style={{ display: 'flex' }}>
                   <span
@@ -90,13 +89,9 @@ function MyNotes({ navigate, search }) {
                       fontSize: 18,
                     }}
                   >
-                    <Accordion.Toggle
-                      as={Card.Text}
-                      variant="link"
-                      eventKey="0"
-                    >
-                      {note.title}
-                    </Accordion.Toggle>
+                    <Accordion.Item as={Card.Text} variant="link" eventKey="0">
+                      <Accordion.Header>{note.title}</Accordion.Header>
+                    </Accordion.Item>
                   </span>
 
                   <div>

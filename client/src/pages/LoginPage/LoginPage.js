@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MainPage from '../../components/MainPage';
@@ -10,11 +10,12 @@ import { login } from '../../actions/userActions';
 import './loginPage.css';
 import ErrorMessage from '../../components/ErrorMessage';
 
-const LoginPage = ({ navigate }) => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
@@ -26,7 +27,7 @@ const LoginPage = ({ navigate }) => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/landingPage');
+      navigate('/mynotes');
     }
   }, [navigate, userInfo]);
 

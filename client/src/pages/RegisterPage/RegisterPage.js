@@ -12,6 +12,7 @@ import { register } from '../../actions/userActions';
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [pic, setPic] = useState(
     'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
   );
@@ -67,7 +68,10 @@ const RegisterPage = () => {
 
     if (password !== confirmpassword) {
       setMessage('Passwords do not match');
-    } else dispatch(register(name, email, password, pic));
+    } else {
+      dispatch(register(name, email, phone, password, pic));
+      navigate('/mynotes');
+    }
   };
 
   return (
@@ -100,6 +104,31 @@ const RegisterPage = () => {
           </Row>
 
           <Row className="mb-3">
+            <Form.Group as={Col} md="6" controlId="phone">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                value={phone}
+                placeholder="08030001000"
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </Form.Group>
+            {picMessage && (
+              <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+            )}
+            <Form.Group as={Col} md="6">
+              <Form.Label>Profile Picture</Form.Label>
+              <Form.Control
+                onChange={(e) => postDetails(e.target.files[0])}
+                id="custom-file"
+                type="file"
+                label="Upload Profile Picture"
+                custom
+              />
+            </Form.Group>
+          </Row>
+
+          <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -120,20 +149,6 @@ const RegisterPage = () => {
               />
             </Form.Group>
           </Row>
-
-          {picMessage && (
-            <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
-          )}
-          <Form.Group controlId="pic">
-            <Form.Label>Profile Picture</Form.Label>
-            <Form.Control
-              onChange={(e) => postDetails(e.target.files[0])}
-              id="custom-file"
-              type="file"
-              label="Upload Profile Picture"
-              custom
-            />
-          </Form.Group>
 
           <Button className="mt-3" variant="primary" type="submit">
             Register
