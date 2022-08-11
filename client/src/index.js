@@ -6,7 +6,7 @@ import store from './store';
 import App from './App';
 // import App from './todo_app/App';
 // import App from './context/App';
-
+import './bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

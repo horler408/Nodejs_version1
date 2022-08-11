@@ -8,6 +8,7 @@ import CreateNote from './pages/CreateNote/CreateNote';
 import SingleNote from './pages/CreateNote/SingleNote';
 import MyNotes from './pages/myNotes/MyNotes';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Logout from './pages/Logout/Logout';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,7 +21,7 @@ function App() {
   return (
     <Router>
       <Header setSearch={setSearch} />
-      <main className="App">
+      <main>
         <Routes>
           <Route path="/" element={<LandingPage />} exact />
           <Route path="/register" element={<RegisterPage exact />} />
@@ -31,6 +32,7 @@ function App() {
           <Route path="/mynotes" element={<MyNotes search={search} />} />
         </Routes>
       </main>
+      <Footer />
     </Router>
   );
 }

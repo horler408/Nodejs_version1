@@ -1,26 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Container } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
-// import './landingPage.css';
-import axios from 'axios';
+import React from 'react';
+import { Row, Container, Button } from 'react-bootstrap';
 
-const LandingPage = ({ navigate }) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    //     const userInfo = localStorage.getItem('userInfo');
-    //     if (userInfo) {
-    //       navigate('/home');
-    //     }
-    const fetchData = async () => {
-      const response = await axios.get('/api/v1/products');
-      const data = await response.data;
-      console.log(data);
-      setData(data);
-    };
+import './landingPage.css';
 
-    fetchData();
-  }, []);
-
+const LandingPage = () => {
   return (
     <div className="main">
       <Container>
@@ -29,9 +12,23 @@ const LandingPage = ({ navigate }) => {
             <div>
               <h1 className="title">Welcome to home page</h1>
               <p className="subtitle">A safe page to land your dream job</p>
-              <p>{!data ? 'Loading...' : data.map((data) => data.name)}</p>
             </div>
-            <div className="buttonContainer"></div>
+            <div className="button-container">
+              <a href="/login">
+                <Button size="lg" className="landing-button">
+                  Login
+                </Button>
+              </a>
+              <a href="/register">
+                <Button
+                  size="lg"
+                  className="landing-button"
+                  variant="outline-primary"
+                >
+                  Register
+                </Button>
+              </a>
+            </div>
           </div>
         </Row>
       </Container>

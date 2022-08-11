@@ -31,7 +31,7 @@ function Header({ setSearch }) {
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand href="/">Note Zipper</Navbar.Brand>
+        <Navbar.Brand href="/">Note Maker</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -56,13 +56,13 @@ function Header({ setSearch }) {
                   id="collasible-nav-dropdown"
                 >
                   <NavDropdown.Item href="/profile">
-                    {/* <img
+                    <img
                       alt=""
                       src={`${userInfo.pic}`}
                       width="25"
                       height="25"
                       style={{ marginRight: 10 }}
-                    /> */}
+                    />
                     My Profile
                   </NavDropdown.Item>
 

@@ -92,18 +92,17 @@ function MyNotes({ navigate, search }) {
                     <Accordion.Item as={Card.Text} variant="link" eventKey="0">
                       <Accordion.Header>{note.title}</Accordion.Header>
                     </Accordion.Item>
+                    <div>
+                      <Button href={`/note/${note._id}`}>Edit</Button>
+                      <Button
+                        variant="danger"
+                        className="mx-2"
+                        onClick={() => deleteHandler(note._id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </span>
-
-                  <div>
-                    <Button href={`/note/${note._id}`}>Edit</Button>
-                    <Button
-                      variant="danger"
-                      className="mx-2"
-                      onClick={() => deleteHandler(note._id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
