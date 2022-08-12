@@ -116,7 +116,7 @@ const RegisterPage = () => {
             {picMessage && (
               <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
             )}
-            <Form.Group as={Col} md="6">
+            <Form.Group as={Col} md="6" className="mb-3">
               <Form.Label>Profile Picture</Form.Label>
               <Form.Control
                 onChange={(e) => postDetails(e.target.files[0])}

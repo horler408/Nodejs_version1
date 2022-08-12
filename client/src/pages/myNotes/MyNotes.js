@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Accordion, Badge, Button, Card } from 'react-bootstrap';
 import MainPage from '../../components/MainPage';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,8 +9,9 @@ import { deleteNoteAction, listNotesAction } from '../../actions/noteActions';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 
-function MyNotes({ navigate, search }) {
+function MyNotes({ search }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const noteList = useSelector((state) => state.noteList);
   const { loading, error, notes } = noteList;
@@ -76,7 +77,7 @@ function MyNotes({ navigate, search }) {
           .reverse()
           .map((note) => (
             <Accordion flush>
-              <Card style={{ margin: 10 }} key={note._id}>
+              <Card style={{ margin: 10 }} key={note.id}>
                 <Card.Header style={{ display: 'flex' }}>
                   <span
                     // onClick={() => ModelShow(note)}

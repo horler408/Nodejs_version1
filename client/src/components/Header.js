@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Container,
   Form,
@@ -26,8 +26,6 @@ function Header({ setSearch }) {
     navigate('/logout');
   };
 
-  useEffect(() => {}, [userInfo]);
-
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
@@ -37,7 +35,7 @@ function Header({ setSearch }) {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="m-auto">
             {userInfo && (
-              <Form inline>
+              <Form>
                 <FormControl
                   type="text"
                   placeholder="Search"
@@ -52,7 +50,7 @@ function Header({ setSearch }) {
               <>
                 <Nav.Link href="/mynotes">My Notes</Nav.Link>
                 <NavDropdown
-                  title={`${userInfo.name}`}
+                  title={`${userInfo?.name}`}
                   id="collasible-nav-dropdown"
                 >
                   <NavDropdown.Item href="/profile">

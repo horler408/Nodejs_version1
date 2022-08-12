@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import MainPage from '../../components/MainPage';
-import './ProfileScreen.css';
+import './profilePage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../actions/userActions';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
+import { useNavigate } from 'react-router-dom';
 
-const ProfilePage = ({ location, navigate }) => {
+const ProfilePage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [pic, setPic] = useState();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [picMessage, setPicMessage] = useState();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -29,6 +32,7 @@ const ProfilePage = ({ location, navigate }) => {
     } else {
       setName(userInfo.name);
       setEmail(userInfo.email);
+      setPhone(userInfo.phone);
       setPic(userInfo.pic);
     }
   }, [navigate, userInfo]);
@@ -38,9 +42,9 @@ const ProfilePage = ({ location, navigate }) => {
     if (pics.type === 'image/jpeg' || pics.type === 'image/png') {
       const data = new FormData();
       data.append('file', pics);
-      data.append('upload_preset', 'notezipper');
-      data.append('cloud_name', 'piyushproj');
-      fetch('https://api.cloudinary.com/v1_1/piyushproj/image/upload', {
+      data.append('upload_preset', 'notestutorial');
+      data.append('cloud_name', 'horlertech');
+      fetch('https://api.cloudinary.com/v1_1/horlertech/image/upload', {
         method: 'post',
         body: data,
       })
@@ -59,14 +63,14 @@ const ProfilePage = ({ location, navigate }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    dispatch(updateProfile({ name, email, password, pic }));
+    if (password === confirmPassword)
+      dispatch(updateProfile({ name, email, phone, password, pic }));
   };
 
   return (
     <MainPage title="EDIT PROFILE">
       <div>
-        <Row className="profileContainer">
+        <Row className="profile-container">
           <Col md={6}>
             <Form onSubmit={submitHandler}>
               {loading && <Loading />}
@@ -94,6 +98,15 @@ const ProfilePage = ({ location, navigate }) => {
                   onChange={(e) => setEmail(e.target.value)}
                 ></Form.Control>
               </Form.Group>
+              <Form.Group controlId="phone">
+                <Form.Label>Phone Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="08030001000"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
               <Form.Group controlId="password">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -103,7 +116,7 @@ const ProfilePage = ({ location, navigate }) => {
                   onChange={(e) => setPassword(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Form.Group controlId="confirmPassword">
+              <Form.Group controlId="confirm-password">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   type="password"
@@ -115,17 +128,16 @@ const ProfilePage = ({ location, navigate }) => {
               {picMessage && (
                 <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
               )}
-              <Form.Group controlId="pic">
+              <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>Change Profile Picture</Form.Label>
-                <Form.File
+                <Form.Control
                   onChange={(e) => postDetails(e.target.files[0])}
-                  id="custom-file"
-                  type="image/png"
+                  type="file"
                   label="Upload Profile Picture"
                   custom
                 />
               </Form.Group>
-              <Button type="submit" varient="primary">
+              <Button type="submit" variant="primary">
                 Update
               </Button>
             </Form>
@@ -137,7 +149,7 @@ const ProfilePage = ({ location, navigate }) => {
               justifyContent: 'center',
             }}
           >
-            <img src={pic} alt={name} className="profilePic" />
+            <img src={pic} alt={name} className="profile-pic" />
           </Col>
         </Row>
       </div>
