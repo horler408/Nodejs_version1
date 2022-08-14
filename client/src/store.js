@@ -12,6 +12,12 @@ import {
   noteUpdateReducer,
   noteDeleteReducer,
 } from './reducers/noteReducers';
+import {
+  productCreateReducer,
+  productListReducer,
+  productUpdateReducer,
+  productDeleteReducer,
+} from './reducers/productReducers';
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -21,6 +27,10 @@ const reducer = combineReducers({
   noteCreate: noteCreateReducer,
   noteUpdate: noteUpdateReducer,
   noteDelete: noteDeleteReducer,
+  productList: productListReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
+  productDelete: productDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

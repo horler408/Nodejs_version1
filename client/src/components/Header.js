@@ -23,13 +23,13 @@ function Header({ setSearch }) {
 
   const logoutHandler = () => {
     dispatch(logout());
-    navigate('/logout');
+    navigate('/');
   };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand href="/">Note Maker</Navbar.Brand>
+        <Navbar.Brand href="/">HorlerTech Store</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -46,9 +46,11 @@ function Header({ setSearch }) {
             )}
           </Nav>
           <Nav>
+            <Nav.Link href="/products">My Products</Nav.Link>
             {userInfo ? (
               <>
                 <Nav.Link href="/mynotes">My Notes</Nav.Link>
+
                 <NavDropdown
                   title={`${userInfo?.name}`}
                   id="collasible-nav-dropdown"
