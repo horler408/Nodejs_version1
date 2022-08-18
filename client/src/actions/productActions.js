@@ -20,17 +20,7 @@ export const productListAction = () => async (dispatch, getstate) => {
       type: PRODUCT_LIST_REQUEST,
     });
 
-    const {
-      userLogin: { userInfo },
-    } = getstate();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.get('/api/v1/products', config);
+    const { data } = await axios.get('/api/v1/products');
     console.log(data);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,

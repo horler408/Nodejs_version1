@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import ErrorPage from './components/ErrorPage';
 import LandingPage from './pages/landingPage/LandingPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -26,6 +27,7 @@ function App() {
       <Header setSearch={setSearch} />
       <main>
         <Routes>
+          <Route path="/*" element={<ErrorPage />} />
           <Route path="/" element={<LandingPage />} exact />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />

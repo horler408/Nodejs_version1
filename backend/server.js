@@ -11,7 +11,7 @@ const noteRoute = require('./v1/routes/notesRoute');
 const productRouteV2 = require('./v2/routes/productRoute');
 const categoryRouteV2 = require('./v2/routes/categoryRoute');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware.js');
-const dbConnect = require('./config/db.js');
+const dbConnect = require('./config/dbRemote.js');
 const cors = require('./config/cors');
 
 dotenv.config();
@@ -33,6 +33,7 @@ app.use('/api/v1/notes', noteRoute);
 // Version 2 routes
 app.use('/api/v2/products', productRouteV2);
 app.use('/api/v2/categories', categoryRouteV2);
+
 // --------------------------deployment------------------------------
 // const __dirname = path.resolve();
 

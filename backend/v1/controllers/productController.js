@@ -3,7 +3,6 @@ const cloudinary = require('cloudinary').v2;
 const asyncHandler = require('express-async-handler');
 
 const Product = require('../../models/productModel');
-const upload = require('../../middleware/multer');
 
 // @desc    Get logged in user products
 // @route   GET /api/product
@@ -41,57 +40,61 @@ const getProduct = asyncHandler(async (req, res) => {
 //@route           GET /api/products/create
 //@access          Private
 const createProduct = asyncHandler((req, res) => {
-  const { name, description, category, price, user } = req.body;
+  const {
+    name,
+    description,
+    category,
+    price,
+    ratings,
+    inStock,
+    expressDelivery,
+  } = req.body;
 
-  if (!name || !description || !category || !price) {
+  if (!name || !description || !category || !price || !ratings) {
     res.status(400);
     throw new Error('Please Fill all the feilds');
   } else {
-    upload(req, res, function (err) {
-      if (err) {
-        return res.send(err);
-      }
-      console.log('file uploaded to server');
-
-      // SEND FILE TO CLOUDINARY
-      cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-      });
-
-      const path = req.file.path;
-      const uniqueFilename = new Date().toISOString();
-
-      cloudinary.uploader.upload(
-        path,
-        { public_id: `ecommerce/${uniqueFilename}`, tags: `horler` },
-        async function (err, image) {
-          //if (err) return res.send(err)
-          if (err) {
-            res.status(400).json({
-              message: 'Error occurred',
-            });
-          }
-          console.log('file uploaded to Cloudinary');
-
-          // return image details
-          console.log(image);
-          const newProduct = new Product({
-            user,
-            name,
-            description,
-            category,
-            price,
-            imageUrl: image.url,
-          });
-
-          const createdProduct = await newProduct.save();
-
-          res.status(201).json(createdProduct);
-        }
-      );
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
     });
+
+    const path = req.file.path;
+    const uniqueFilename = new Date().toISOString();
+
+    cloudinary.uploader.upload(
+      path,
+      { public_id: `ecommerce/${uniqueFilename}`, tags: `horler` },
+      async function (err, image) {
+        //if (err) return res.send(err)
+        if (err) {
+          res.status(400).json({
+            message: 'Error occurred',
+          });
+        }
+        console.log('file uploaded to Cloudinary');
+
+        // return image details
+        // console.log(image);
+        const newProduct = new Product({
+          user: req.user._id,
+          name,
+          description,
+          category,
+          price,
+          ratings,
+          inStock,
+          expressDelivery,
+          imageUrl: image.url,
+        });
+
+        const createdProduct = await newProduct.save();
+
+        res.status(201).json(createdProduct);
+      }
+    );
   }
 });
 
@@ -115,47 +118,29 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update a note
-// @route   PUT /api/notes/:id
-// @access  Private
-// const updateProduct = asyncHandler(async (req, res) => {
-//   const { title, description, category, price } = req.body;
+//@description     Update single Product
+//@route           GET /api/products/:id
+//@access          Private
+const updateProduct = asyncHandler(async (req, res) => {
+  const {
+    name,
+    description,
+    price,
+    category,
+    ratings,
+    inStock,
+    expressDelivery,
+  } = req.body;
 
-//   const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id);
 
-//   if (product.user.toString() !== req.user._id.toString()) {
-//     res.status(401);
-//     throw new Error("You can't perform this action");
-//   }
-
-//   if (product) {
-//     product.name = name;
-//     product.description = description;
-//     product.category = category;
-//     product.price = price;
-
-//     const updatedProduct = await product.save();
-//     res.json(updatedProduct);
-//   } else {
-//     res.status(404);
-//     throw new Error('Product not found');
-//   }
-// });
-
-const updateProduct = asyncHandler((req, res) => {
-  const { name, description, price, category } = req.body;
-  let product = new Product({ _id: req.params.id });
-
-  upload(req, res, function (err) {
-    if (err) {
-      return res.send(err);
-    }
-
+  if (product) {
     // SEND FILE TO CLOUDINARY
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
     });
 
     const path = req.file.path;
@@ -172,13 +157,19 @@ const updateProduct = asyncHandler((req, res) => {
         product.description = description;
         product.category = category;
         product.price = price;
+        product.ratings = ratings;
+        product.inStock = inStock;
+        product.expressDelivery = expressDelivery;
         product.imageUrl = image.url;
 
         const updatedProduct = await product.save();
         res.json(updatedProduct);
       }
     );
-  });
+  } else {
+    res.status(404);
+    throw new Error('Product not found!');
+  }
 });
 
 module.exports = {

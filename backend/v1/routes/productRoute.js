@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const upload = require('../../middleware/multer');
+const { auth } = require('../../middleware/authMiddleware');
 
 const {
   getProducts,
@@ -12,8 +13,8 @@ const {
 
 router.get('/', getProducts);
 router.get('/:id', getProduct);
-router.post('/', upload, createProduct);
-router.patch('/:id', upload, updateProduct);
-router.delete('/delete/:id', deleteProduct);
+router.post('/', auth, upload, createProduct);
+router.put('/:id', auth, upload, updateProduct);
+router.delete('/delete/:id', auth, deleteProduct);
 
 module.exports = router;

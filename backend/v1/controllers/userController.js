@@ -65,7 +65,7 @@ const authUser = asyncHandler(async (req, res) => {
 //@route           POST /api/users/
 //@access          Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, pic, phone } = req.body;
+  const { name, email, password, pic, phone, isAdmin } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -79,6 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     phone,
     password,
+    isAdmin,
     pic,
   });
 
@@ -104,12 +105,16 @@ const registerUser = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  const { name, email, pic, password, phone } = req.body;
+  const { name, email, pic, password, phone, isAdmin } = req.body;
 
+  if (req.user.email === email) {
+    throw new Error('Email already exists, Cannot update');
+  }
   if (user) {
     user.name = name || user.name;
     user.email = email || user.email;
     user.phone = phone || user.phone;
+    user.isAdmin = isAdmin || user.isAdmin;
     user.pic = pic || user.pic;
     if (password) {
       user.password = password;
