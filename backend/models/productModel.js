@@ -31,8 +31,8 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     inStock: {
-      type: Boolean,
-      default: true,
+      type: Number,
+      default: 0,
     },
     expressDelivery: {
       type: Boolean,

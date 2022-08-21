@@ -6,6 +6,7 @@ const path = require('path');
 const userRoute = require('./v1/routes/userRoute.js');
 const productRoute = require('./v1/routes/productRoute.js');
 const orderRoute = require('./v1/routes/orderRoute.js');
+const cartRoute = require('./v1/routes/cartRoute.js');
 const noteRoute = require('./v1/routes/notesRoute');
 
 const productRouteV2 = require('./v2/routes/productRoute');
@@ -27,7 +28,8 @@ app.use(cors);
 
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/products', productRoute);
-app.use('/api/v1/orders', orderRoute);
+app.use('/api/v1/order', orderRoute);
+app.use('/api/v1/cart', cartRoute);
 app.use('/api/v1/notes', noteRoute);
 
 // Version 2 routes

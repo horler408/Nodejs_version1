@@ -1,14 +1,15 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Rating from '../../components/Rating';
 
-const SingleProductPage = ({ product, carts }) => {
+const SingleProductPage = ({ product }) => {
   const dispatch = useDispatch();
 
-  // const productList = useSelector((state) => state.productList);
-  // const { products } = productList;
+  const cartItems = useSelector((state) => state.cartItems);
+  const { cart } = cartItems;
+  console.log(cart);
 
   return (
     <div className="products">
@@ -31,7 +32,7 @@ const SingleProductPage = ({ product, carts }) => {
             )}
             <Rating rating={product.ratings} />
           </Card.Subtitle>
-          {carts.some((p) => p.id === product.id) ? (
+          {cart.some((p) => p.id === product.id) ? (
             <Button
               variant="danger"
               onClick={() =>

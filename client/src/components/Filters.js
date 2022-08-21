@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Rating from './Rating';
 
 const Filters = () => {
-  const dispatch = useDispatch();
+  const [rate, setRate] = useState(3);
+  const productDispatch = useDispatch();
 
   // const productState = useSelector(state=>state.productList});
   // const { byStock, byExpressDelivery, sort, byRating } = productState
@@ -17,7 +19,7 @@ const Filters = () => {
   // make state for rating
   return (
     <div className="filters">
-      <span className="title">Filter Products</span>
+      <span className="product-title">Filter Products</span>
       <span>
         <Form.Check
           inline
@@ -26,7 +28,7 @@ const Filters = () => {
           type="radio"
           id={`inline-1`}
           onChange={() =>
-            dispatch({
+            productDispatch({
               type: 'SORT_BY_PRICE',
               payload: 'lowToHigh',
             })
@@ -42,7 +44,7 @@ const Filters = () => {
           type="radio"
           id={`inline-2`}
           onChange={() =>
-            dispatch({
+            productDispatch({
               type: 'SORT_BY_PRICE',
               payload: 'highToLow',
             })
@@ -58,7 +60,7 @@ const Filters = () => {
           type="checkbox"
           id={`inline-3`}
           onChange={() =>
-            dispatch({
+            productDispatch({
               type: 'FILTER_BY_STOCK',
             })
           }
@@ -73,7 +75,7 @@ const Filters = () => {
           type="checkbox"
           id={`inline-4`}
           onChange={() =>
-            dispatch({
+            productDispatch({
               type: 'FILTER_BY_DELIVERY',
             })
           }
@@ -83,20 +85,21 @@ const Filters = () => {
       <span>
         <label style={{ paddingRight: 10 }}>Rating: </label>
         <Rating
-          // rating={byRating}
-          onClick={(i) =>
-            dispatch({
-              type: 'FILTER_BY_RATING',
-              payload: i + 1,
-            })
-          }
+          rating={rate}
+          onClick={(i) => setRate(i + 1)}
+          // onClick={(i) =>
+          //   productDispatch({
+          //     type: 'FILTER_BY_RATING',
+          //     payload: i + 1,
+          //   })
+          // }
           style={{ cursor: 'pointer' }}
         />
       </span>
       <Button
         variant="light"
         onClick={() =>
-          dispatch({
+          productDispatch({
             type: 'CLEAR_FILTERS',
           })
         }
