@@ -14,7 +14,7 @@ import {
   NOTE_UPDATE_FAIL,
 } from '../constants/noteConstants';
 
-export const listNotesAction = () => async (dispatch, getstate) => {
+export const listNotesAction = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: NOTE_LIST_REQUEST,
@@ -22,7 +22,7 @@ export const listNotesAction = () => async (dispatch, getstate) => {
 
     const {
       userLogin: { userInfo },
-    } = getstate();
+    } = getState();
 
     const config = {
       headers: {

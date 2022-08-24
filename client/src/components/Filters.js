@@ -1,22 +1,15 @@
-import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Rating from './Rating';
 
 const Filters = () => {
-  const [rate, setRate] = useState(3);
-  const productDispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const productState = useSelector(state=>state.productList});
-  // const { byStock, byExpressDelivery, sort, byRating } = productState
+  const productState = useSelector((state) => state.productFilter);
+  const { byStock, byExpressDelivery, sort, byRating } = productState;
+  // console.log(productState);
 
-  // const {
-  //   productDispatch,
-  //   productState: { byStock, byExpressDelivery, sort, byRating },
-  // } = CartState();
-
-  // make state for rating
   return (
     <div className="filters">
       <span className="product-title">Filter Products</span>
@@ -28,12 +21,12 @@ const Filters = () => {
           type="radio"
           id={`inline-1`}
           onChange={() =>
-            productDispatch({
+            dispatch({
               type: 'SORT_BY_PRICE',
               payload: 'lowToHigh',
             })
           }
-          // checked={sort === 'lowToHigh' ? true : false}
+          checked={sort === 'lowToHigh' ? true : false}
         />
       </span>
       <span>
@@ -44,12 +37,12 @@ const Filters = () => {
           type="radio"
           id={`inline-2`}
           onChange={() =>
-            productDispatch({
+            dispatch({
               type: 'SORT_BY_PRICE',
               payload: 'highToLow',
             })
           }
-          // checked={sort === 'highToLow' ? true : false}
+          checked={sort === 'highToLow' ? true : false}
         />
       </span>
       <span>
@@ -60,11 +53,11 @@ const Filters = () => {
           type="checkbox"
           id={`inline-3`}
           onChange={() =>
-            productDispatch({
+            dispatch({
               type: 'FILTER_BY_STOCK',
             })
           }
-          // checked={byStock}
+          checked={byStock}
         />
       </span>
       <span>
@@ -75,31 +68,30 @@ const Filters = () => {
           type="checkbox"
           id={`inline-4`}
           onChange={() =>
-            productDispatch({
+            dispatch({
               type: 'FILTER_BY_DELIVERY',
             })
           }
-          // checked={byExpressDelivery}
+          checked={byExpressDelivery}
         />
       </span>
       <span>
         <label style={{ paddingRight: 10 }}>Rating: </label>
         <Rating
-          rating={rate}
-          onClick={(i) => setRate(i + 1)}
-          // onClick={(i) =>
-          //   productDispatch({
-          //     type: 'FILTER_BY_RATING',
-          //     payload: i + 1,
-          //   })
-          // }
+          rating={byRating}
+          onClick={(i) =>
+            dispatch({
+              type: 'FILTER_BY_RATING',
+              payload: i + 1,
+            })
+          }
           style={{ cursor: 'pointer' }}
         />
       </span>
       <Button
         variant="light"
         onClick={() =>
-          productDispatch({
+          dispatch({
             type: 'CLEAR_FILTERS',
           })
         }

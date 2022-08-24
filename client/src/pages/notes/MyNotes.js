@@ -76,8 +76,8 @@ function MyNotes({ search }) {
           )
           .reverse()
           .map((note) => (
-            <Accordion flush>
-              <Card style={{ margin: 10 }} key={note.id}>
+            <Accordion flush key={note._id}>
+              <Card style={{ margin: 10 }}>
                 <Card.Header style={{ display: 'flex' }}>
                   <span
                     // onClick={() => ModelShow(note)}

@@ -14,14 +14,14 @@ import {
   PRODUCT_UPDATE_FAIL,
 } from '../constants/productConstants';
 
-export const productListAction = () => async (dispatch, getstate) => {
+export const productListAction = () => async (dispatch) => {
   try {
     dispatch({
       type: PRODUCT_LIST_REQUEST,
     });
 
     const { data } = await axios.get('/api/v1/products');
-    console.log(data);
+
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -39,7 +39,8 @@ export const productListAction = () => async (dispatch, getstate) => {
 };
 
 export const productCreateAction =
-  (title, content, category, pic) => async (dispatch, getState) => {
+  (name, description, category, price, express, inStock, ratings, pic) =>
+  async (dispatch, getState) => {
     try {
       dispatch({
         type: PRODUCT_CREATE_REQUEST,
@@ -58,7 +59,7 @@ export const productCreateAction =
 
       const { data } = await axios.post(
         `/api/v1/products`,
-        { title, content, category, pic },
+        { name, description, category, price, express, inStock, ratings, pic },
         config
       );
 
@@ -79,7 +80,8 @@ export const productCreateAction =
   };
 
 export const productUpdateAction =
-  (id, title, content, category, pic) => async (dispatch, getState) => {
+  (id, name, description, category, price, express, inStock, ratings, pic) =>
+  async (dispatch, getState) => {
     try {
       dispatch({
         type: PRODUCT_UPDATE_REQUEST,
@@ -98,7 +100,7 @@ export const productUpdateAction =
 
       const { data } = await axios.put(
         `/api/v1/products/${id}`,
-        { title, content, category, pic },
+        { name, description, category, price, express, inStock, ratings, pic },
         config
       );
 

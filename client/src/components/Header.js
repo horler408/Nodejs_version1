@@ -43,6 +43,12 @@ function Header({ setSearch }) {
             style={{ width: 400 }}
             placeholder="Search a product"
             className="m-auto"
+            onClick={(e) => {
+              dispatch({
+                type: 'FILTER_BY_SEARCH',
+                payload: e.target.value,
+              });
+            }}
           />
         </Navbar.Text>
 

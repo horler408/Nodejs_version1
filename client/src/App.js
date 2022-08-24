@@ -20,6 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './pages/products/Checkout';
 // const MyNotes = React.lazy(() => import('./pages/myNotes/MyNotes'));
 // const LandingPage = React.lazy(() => import('./pages/landingPage/LandingPage'));
+import TestProduct from './pages/products/TestProduct';
 
 function App() {
   const [search, setSearch] = useState('');
@@ -39,6 +40,7 @@ function App() {
           <Route path="/mynotes" element={<MyNotes search={search} />} />
 
           <Route path="/createproduct" element={<CreateProduct />} />
+          <Route path="/test" element={<TestProduct />} />
           <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />

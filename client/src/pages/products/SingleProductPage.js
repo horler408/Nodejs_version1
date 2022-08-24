@@ -9,7 +9,6 @@ const SingleProductPage = ({ product }) => {
 
   const cartItems = useSelector((state) => state.cartItems);
   const { cart } = cartItems;
-  console.log(cart);
 
   return (
     <div className="products">

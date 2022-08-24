@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Form } from 'react-bootstrap';
+import { Button, Card, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,61 +10,40 @@ import ErrorMessage from '../../components/ErrorMessage';
 import ReactMarkdown from 'react-markdown';
 
 function CreateProductPage() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0.0);
-  const [category, setCategory] = useState('');
-  const [ratings, setRatings] = useState(0);
-  const [express, setExpress] = useState(false);
-  const [inStock, setInStock] = useState(false);
-  const [picMessage, setPicMessage] = useState('');
-  const [pic, setPic] = useState(
-    'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
-  );
+  // const [name, setName] = useState('');
+  // const [desc, setDesc] = useState('');
+  // const [price, setPrice] = useState('');
+  // const [pic, setPic] = useState('');
+  // const [category, setCategory] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const postDetails = (pics) => {
-    if (
-      pics ===
-      'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
-    ) {
-      return setPicMessage('Please Select an Image');
-    }
-    setPicMessage(null);
-    if (pics.type === 'image/jpeg' || pics.type === 'image/png') {
-      const data = new FormData();
-      data.append('file', pics);
-      data.append('upload_preset', 'notestutorial');
-      data.append('cloud_name', 'horlertech');
-      fetch('https://api.cloudinary.com/v1_1/horlertech/image/upload', {
-        method: 'post',
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      return setPicMessage('Please Select an Image');
-    }
-  };
+  // const productCreate = useSelector((state) => state.productCreate);
+  // const { loading, error } = productCreate;
 
   const productCreate = useSelector((state) => state.productCreate);
-  const { loading, error } = productCreate;
+  const {
+    name,
+    description,
+    category,
+    price,
+    pic,
+    inStock,
+    ratings,
+    expressDelivery,
+    loading,
+    error,
+  } = productCreate;
 
   const resetHandler = () => {
-    setName('');
-    setDescription('');
-    setCategory('');
-    setPrice('');
-    setRatings(0);
-    setInStock(false);
-    setExpress(false);
+    name('');
+    description('');
+    category('');
+    price('');
+    ratings(0);
+    inStock(false);
+    expressDelivery(false);
   };
 
   const submitHandler = (e) => {
@@ -77,9 +56,8 @@ function CreateProductPage() {
         category,
         price,
         inStock,
-        express,
-        ratings,
-        pic
+        expressDelivery,
+        ratings
       )
     );
 
@@ -102,7 +80,12 @@ function CreateProductPage() {
                 type="text"
                 value={name}
                 placeholder="Enter the product name"
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: '',
+                    payload: '',
+                  })
+                }
               />
             </Form.Group>
 
@@ -113,7 +96,12 @@ function CreateProductPage() {
                 value={description}
                 placeholder="Describe the product"
                 rows={4}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: '',
+                    payload: '',
+                  })
+                }
               />
             </Form.Group>
             {description && (
@@ -132,7 +120,12 @@ function CreateProductPage() {
                 type="category"
                 value={category}
                 placeholder="Enter the Category"
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: '',
+                    payload: '',
+                  })
+                }
               />
             </Form.Group>
             <Form.Group controlId="price">
@@ -141,7 +134,12 @@ function CreateProductPage() {
                 type="text"
                 value={price}
                 placeholder="e.g NGN 2.00"
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: '',
+                    payload: '',
+                  })
+                }
               />
             </Form.Group>
             <Form.Group controlId="ratings">
@@ -149,7 +147,12 @@ function CreateProductPage() {
               <Form.Control
                 type="number"
                 value={ratings}
-                onChange={(e) => setRatings(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: '',
+                    payload: '',
+                  })
+                }
               />
             </Form.Group>
 
@@ -159,8 +162,13 @@ function CreateProductPage() {
                 name="group1"
                 type="radio"
                 id={`inline-1`}
-                onChange={(e) => setExpress(e.target.value)}
-                checked={express === 'true' ? true : false}
+                onChange={() =>
+                  dispatch({
+                    type: '',
+                    payload: 'true',
+                  })
+                }
+                checked={expressDelivery === 'true' ? true : false}
               />
             </span>
             <span>
@@ -170,23 +178,15 @@ function CreateProductPage() {
                 name="group1"
                 type="radio"
                 id={`inline-2`}
-                onChange={(e) => setName(e.target.value)}
-                checked={express === 'false' ? false : true}
+                onChange={() =>
+                  dispatch({
+                    type: 'SORT_BY_PRICE',
+                    payload: 'false',
+                  })
+                }
+                checked={expressDelivery === 'false' ? false : true}
               />
             </span>
-            {picMessage && (
-              <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
-            )}
-            <Form.Group as={Col} md="6" className="mb-3">
-              <Form.Label>Profile Picture</Form.Label>
-              <Form.Control
-                onChange={(e) => postDetails(e.target.files[0])}
-                id="custom-file"
-                type="file"
-                label="Upload Profile Picture"
-                custom
-              />
-            </Form.Group>
             {loading && <Loading size={50} />}
             <Button type="submit" variant="primary">
               Create Product
