@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import axios from 'axios';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import MainPage from '../../components/MainPage';
-import { productCreateAction } from '../../actions/productActions';
+import {
+  productUpdateAction,
+  productDeleteAction,
+} from '../../actions/productActions';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
 import ReactMarkdown from 'react-markdown';
 
-function CreateProductPage() {
+function UpdateProductPage() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -24,6 +29,7 @@ function CreateProductPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const postDetails = (pics) => {
     if (
@@ -57,8 +63,14 @@ function CreateProductPage() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const productCreate = useSelector((state) => state.productCreate);
-  const { loading, error } = productCreate;
+  //   const productCreate = useSelector((state) => state.productCreate);
+  //   const { loading, error } = productCreate;
+
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const { loading, error } = productUpdate;
+
+  const productDelete = useSelector((state) => state.productDelete);
+  const { loading: loadingDelete, error: errorDelete } = productDelete;
 
   const resetHandler = () => {
     setName('');
@@ -70,7 +82,14 @@ function CreateProductPage() {
     setExpress(false);
   };
 
-  const submitHandler = (e) => {
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(productDeleteAction(id));
+    }
+    navigate('/mynotes');
+  };
+
+  const updateHandler = (e) => {
     e.preventDefault();
     if (!userInfo) {
       navigate('/');
@@ -78,7 +97,7 @@ function CreateProductPage() {
 
     if (!name || !ratings || !description || !category) return;
     dispatch(
-      productCreateAction(
+      productUpdateAction(
         name,
         description,
         category,
@@ -91,17 +110,43 @@ function CreateProductPage() {
     );
 
     resetHandler();
+    navigate('/products');
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!userInfo && !userInfo.isAdmin) {
+      navigate('/');
+    }
+
+    const fetching = async () => {
+      const { data } = await axios.get(`/api/v1/products/${id}`);
+
+      setName(data.name);
+      setDescription(data.description);
+      setCategory(data.category);
+      setPrice(data.price);
+      setExpress(data.express);
+      setInStock(data.inStock);
+      setRatings(data.ratings);
+      setPic(data.imageUrl);
+      //   setDate(data.updatedAt);
+    };
+
+    fetching();
+  }, [id, userInfo, navigate]);
 
   return (
     <MainPage title="Create a Product">
       <Card>
         <Card.Header>Create a new Product</Card.Header>
         <Card.Body>
-          <Form onSubmit={submitHandler}>
+          <Form onSubmit={updateHandler}>
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+            {errorDelete && (
+              <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
+            )}
+            {loading && <Loading />}
+            {loadingDelete && <Loading />}
             <Row mb="3">
               <Form.Group as={Col} md="6" controlId="name">
                 <Form.Label>Name</Form.Label>
@@ -203,10 +248,14 @@ function CreateProductPage() {
             <br />
             {loading && <Loading size={50} />}
             <Button type="submit" variant="primary">
-              Create Product
+              Update Product
             </Button>
-            <Button className="mx-2" onClick={resetHandler} variant="danger">
-              Reset Feilds
+            <Button
+              className="mx-2"
+              variant="danger"
+              onClick={() => deleteHandler(id)}
+            >
+              Delete Product
             </Button>
           </Form>
         </Card.Body>
@@ -219,4 +268,4 @@ function CreateProductPage() {
   );
 }
 
-export default CreateProductPage;
+export default UpdateProductPage;

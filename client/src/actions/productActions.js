@@ -120,6 +120,30 @@ export const productUpdateAction =
     }
   };
 
+export const productDetailAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_UPDATE_REQUEST,
+    });
+
+    const { data } = await axios.get(`/api/v1/products/${id}`);
+
+    dispatch({
+      type: PRODUCT_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: PRODUCT_UPDATE_FAIL,
+      payload: message,
+    });
+  }
+};
+
 export const productDeleteAction = (id) => async (dispatch, getState) => {
   try {
     dispatch({

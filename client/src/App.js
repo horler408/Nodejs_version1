@@ -7,11 +7,13 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/profilePage/ProfilePage';
 import CreateNote from './pages/notes/CreateNote';
+
 import SingleNote from './pages/notes/SingleNote';
 import Cart from './pages/products/Cart';
 import MyNotes from './pages/notes/MyNotes';
 import CreateProduct from './pages/products/CreateProductPage';
 import SingleProduct from './pages/products/SingleProductPage';
+import ProductDetailPage from './pages/products/ProductDetailPage';
 import Products from './pages/products/ProductsPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -42,8 +44,9 @@ function App() {
           <Route path="/createproduct" element={<CreateProduct />} />
           <Route path="/test" element={<TestProduct />} />
           <Route path="/product/:id" element={<SingleProduct />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/product/cart" element={<Cart />} />
+          <Route path="/product/checkout" element={<Checkout />} />
+          <Route path="/product/detail" element={<ProductDetailPage />} />
           <Route path="/products" element={<Products search={search} />} />
         </Routes>
       </main>

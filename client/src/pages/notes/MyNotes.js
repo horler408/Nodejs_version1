@@ -80,7 +80,6 @@ function MyNotes({ search }) {
               <Card style={{ margin: 10 }}>
                 <Card.Header style={{ display: 'flex' }}>
                   <span
-                    // onClick={() => ModelShow(note)}
                     style={{
                       color: 'black',
                       textDecoration: 'none',
@@ -93,6 +92,7 @@ function MyNotes({ search }) {
                     <Accordion.Item as={Card.Text} variant="link" eventKey="0">
                       <Accordion.Header>{note.title}</Accordion.Header>
                     </Accordion.Item>
+
                     <div>
                       <Button href={`/note/${note._id}`}>Edit</Button>
                       <Button

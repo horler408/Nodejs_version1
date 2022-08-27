@@ -1,10 +1,11 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Rating from '../../components/Rating';
 
-const SingleProductPage = ({ product }) => {
+const SingleProductPage = ({ product, key }) => {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cartItems);
@@ -13,16 +14,17 @@ const SingleProductPage = ({ product }) => {
   return (
     <div className="products">
       <Card>
-        <Card.Img
-          variant="top"
-          className="product-image"
-          src={product.imageUrl}
-          alt={product.name}
-        />
+        <Link to={`/product/detail/${key}`}>
+          <Card.Img
+            variant="top"
+            className="product-image"
+            src={product.imageUrl}
+            alt={product.name}
+          />
+        </Link>
         <Card.Body>
           <Card.Title>{product.name}</Card.Title>
           <Card.Subtitle style={{ paddingBottom: 10 }}>
-            {/* <span>NGN {product.price.split('.')[0]}</span> */}
             <span>NGN {product.price}</span>
             {product.expressDelivery ? (
               <div>Express Delivery</div>
