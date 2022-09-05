@@ -36,7 +36,7 @@ const productSchema = mongoose.Schema(
     },
     expressDelivery: {
       type: Boolean,
-      default: true,
+      required: true,
     },
     ratings: {
       type: Number,

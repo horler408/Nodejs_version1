@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import MainPage from '../../components/MainPage';
 import { createNoteAction } from '../../actions/noteActions';
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import ErrorMessage from '../../components/InfoMessage';
 import ReactMarkdown from 'react-markdown';
 
 function CreateNote() {

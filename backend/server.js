@@ -18,7 +18,7 @@ const cors = require('./config/cors');
 dotenv.config();
 dbConnect();
 
-const app = express(); // main thing
+const app = express(); // main app
 
 app.use(express.json()); // to accept json data
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -38,7 +38,7 @@ function Header({ setSearch }) {
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
         <Navbar.Brand href="/">HorlerTech Store</Navbar.Brand>
-        <Navbar.Text className="search">
+        {/* <Navbar.Text className="search">
           <FormControl
             style={{ width: 400 }}
             placeholder="Search a product"
@@ -50,7 +50,7 @@ function Header({ setSearch }) {
               });
             }}
           />
-        </Navbar.Text>
+        </Navbar.Text> */}
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -60,7 +60,7 @@ function Header({ setSearch }) {
                 <FormControl
                   type="text"
                   placeholder="Search"
-                  className="mr-sm-2"
+                  className="search"
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </Form>
@@ -100,7 +100,7 @@ function Header({ setSearch }) {
                         />
                       </span>
                     ))}
-                    <Link to="/cart">
+                    <Link to="/product/cart">
                       <Button style={{ width: '90%', margin: '0 10px' }}>
                         Go to Cart
                       </Button>
@@ -111,11 +111,9 @@ function Header({ setSearch }) {
                 )}
               </Dropdown.Menu>
             </Dropdown>
-            <Nav.Link href="/products">My Products</Nav.Link>
+
             {userInfo ? (
               <>
-                <Nav.Link href="/mynotes">My Notes</Nav.Link>
-
                 <NavDropdown
                   title={`${userInfo?.name}`}
                   id="collasible-nav-dropdown"
@@ -132,13 +130,27 @@ function Header({ setSearch }) {
                   </NavDropdown.Item>
 
                   <NavDropdown.Divider />
+                  <NavDropdown.Item>
+                    <Nav.Link
+                      style={{ color: 'inherit' }}
+                      className="link"
+                      href="/mynotes"
+                    >
+                      My Notes
+                    </Nav.Link>
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               </>
             ) : (
-              <Nav.Link href="/login">Login</Nav.Link>
+              <>
+                <Nav.Link href="/products">My Products</Nav.Link>
+
+                <Nav.Link href="/login">Login</Nav.Link>
+              </>
             )}
             {/* {userInfo.isAdmin ? <Nav.Link href="/admin">Admin</Nav.Link> : null} */}
           </Nav>

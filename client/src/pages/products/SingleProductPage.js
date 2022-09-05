@@ -1,20 +1,18 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Card } from 'react-bootstrap';
+import { Link, NavLink } from 'react-router-dom';
 
 import Rating from '../../components/Rating';
 
-const SingleProductPage = ({ product, key }) => {
-  const dispatch = useDispatch();
-
-  const cartItems = useSelector((state) => state.cartItems);
-  const { cart } = cartItems;
+const SingleProductPage = ({ product }) => {
+  // const cartItems = useSelector((state) => state.cartItems);
+  // const { cart } = cartItems;
+  const id = product._id;
 
   return (
     <div className="products">
       <Card>
-        <Link to={`/product/detail/${key}`}>
+        <Link to={`/product/detail/${id}`}>
           <Card.Img
             variant="top"
             className="product-image"
@@ -33,31 +31,12 @@ const SingleProductPage = ({ product, key }) => {
             )}
             <Rating rating={product.ratings} />
           </Card.Subtitle>
-          {cart.some((p) => p.id === product.id) ? (
-            <Button
-              variant="danger"
-              onClick={() =>
-                dispatch({
-                  type: 'REMOVE_FROM_CART',
-                  payload: product,
-                })
-              }
-            >
-              Remove from Cart
-            </Button>
-          ) : (
-            <Button
-              onClick={() =>
-                dispatch({
-                  type: 'ADD_TO_CART',
-                  payload: product,
-                })
-              }
-              disabled={!product.inStock}
-            >
-              {!product.inStock ? 'Out of Stock' : 'Add to Cart'}
-            </Button>
-          )}
+          <NavLink
+            to={`/product/detail/${id}`}
+            className="btn btn-outline-primary"
+          >
+            Buy Now
+          </NavLink>
         </Card.Body>
       </Card>
     </div>

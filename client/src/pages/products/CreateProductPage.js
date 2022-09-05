@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import MainPage from '../../components/MainPage';
 import { productCreateAction } from '../../actions/productActions';
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
 import ReactMarkdown from 'react-markdown';
 
 function CreateProductPage() {
+  const [flag, setFlag] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -58,7 +59,7 @@ function CreateProductPage() {
   const { userInfo } = userLogin;
 
   const productCreate = useSelector((state) => state.productCreate);
-  const { loading, error } = productCreate;
+  const { loading, error, success } = productCreate;
 
   const resetHandler = () => {
     setName('');
@@ -90,18 +91,26 @@ function CreateProductPage() {
       )
     );
 
-    resetHandler();
+    setFlag(true);
+
+    if (dispatch) resetHandler();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!userInfo && !userInfo.isAdmin) {
+      navigate('/');
+    }
+  }, [navigate, userInfo]);
 
   return (
     <MainPage title="Create a Product">
       <Card>
         <Card.Header>Create a new Product</Card.Header>
+
         <Card.Body>
           <Form onSubmit={submitHandler}>
-            {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+            {error && <InfoMessage variant="danger">{error}</InfoMessage>}
+            {flag && <InfoMessage variant="success">{success}</InfoMessage>}
             <Row mb="3">
               <Form.Group as={Col} md="6" controlId="name">
                 <Form.Label>Name</Form.Label>
@@ -168,7 +177,7 @@ function CreateProductPage() {
               </Form.Group>
 
               {picMessage && (
-                <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+                <InfoMessage variant="danger">{picMessage}</InfoMessage>
               )}
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Product Picture</Form.Label>

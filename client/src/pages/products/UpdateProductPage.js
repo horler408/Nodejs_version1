@@ -11,10 +11,11 @@ import {
   productDeleteAction,
 } from '../../actions/productActions';
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
 import ReactMarkdown from 'react-markdown';
 
 function UpdateProductPage() {
+  const [flag, setFlag] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -67,7 +68,7 @@ function UpdateProductPage() {
   //   const { loading, error } = productCreate;
 
   const productUpdate = useSelector((state) => state.productUpdate);
-  const { loading, error } = productUpdate;
+  const { loading, error, success } = productUpdate;
 
   const productDelete = useSelector((state) => state.productDelete);
   const { loading: loadingDelete, error: errorDelete } = productDelete;
@@ -91,6 +92,7 @@ function UpdateProductPage() {
 
   const updateHandler = (e) => {
     e.preventDefault();
+    setFlag(false);
     if (!userInfo) {
       navigate('/');
     }
@@ -111,12 +113,13 @@ function UpdateProductPage() {
 
     resetHandler();
     navigate('/products');
+    setFlag(true);
   };
 
   useEffect(() => {
-    if (!userInfo && !userInfo.isAdmin) {
-      navigate('/');
-    }
+    // if (!userInfo && !userInfo?.isAdmin) {
+    //   navigate('/');
+    // }
 
     const fetching = async () => {
       const { data } = await axios.get(`/api/v1/products/${id}`);
@@ -141,9 +144,10 @@ function UpdateProductPage() {
         <Card.Header>Create a new Product</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
-            {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+            {error && <InfoMessage variant="danger">{error}</InfoMessage>}
+            {flag && <InfoMessage variant="success">{success}</InfoMessage>}
             {errorDelete && (
-              <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
+              <InfoMessage variant="danger">{errorDelete}</InfoMessage>
             )}
             {loading && <Loading />}
             {loadingDelete && <Loading />}
@@ -213,7 +217,7 @@ function UpdateProductPage() {
               </Form.Group>
 
               {picMessage && (
-                <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+                <InfoMessage variant="danger">{picMessage}</InfoMessage>
               )}
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Product Picture</Form.Label>

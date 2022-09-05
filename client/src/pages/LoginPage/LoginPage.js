@@ -8,7 +8,7 @@ import Loading from '../../components/Loading';
 import { login } from '../../actions/userActions';
 
 import './loginPage.css';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -34,7 +34,7 @@ const LoginPage = () => {
   return (
     <MainPage title="LOGIN">
       <div className="login-container">
-        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {error && <InfoMessage variant="danger">{error}</InfoMessage>}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">

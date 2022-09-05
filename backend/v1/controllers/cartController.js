@@ -11,7 +11,7 @@ const getCarts = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      msg: 'Error occured!',
+      message: 'Error occured!',
     });
   }
 };
@@ -39,7 +39,7 @@ const addCartItem = async (req, res) => {
     let cart = await Cart.findOne({ userId });
     let item = await Product.findOne({ _id: productId });
     if (!item) {
-      res.status(404).json('Item not found!');
+      res.status(404).json('Product not found!');
     }
     const price = item.price;
     const name = item.name;

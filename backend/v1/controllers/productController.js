@@ -16,8 +16,13 @@ const getProducts = asyncHandler(async (req, res) => {
     res.json(products);
   }
 
-  const products = await Product.find();
-  res.json(products);
+  const products = await Product.find()
+    .select(
+      'name description price category user inStock expressDelivery ratings imageUrl'
+    )
+    .exec();
+  const count = products.length;
+  res.json({ count, products });
 });
 
 //@description     Fetch single Note
@@ -31,14 +36,12 @@ const getProduct = asyncHandler(async (req, res) => {
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
-
-  res.json(product);
 });
 
 //@description     Create a product
 //@route           GET /api/products/create
 //@access          Private
-const createProduct = asyncHandler((req, res) => {
+const createProductCloudinary = asyncHandler((req, res) => {
   const {
     name,
     description,
@@ -94,6 +97,38 @@ const createProduct = asyncHandler((req, res) => {
         res.status(201).json(createdProduct);
       }
     );
+  }
+});
+const createProduct = asyncHandler(async (req, res) => {
+  const {
+    name,
+    description,
+    category,
+    price,
+    ratings,
+    inStock,
+    expressDelivery,
+  } = req.body;
+
+  if (!name || !description || !category || !price || !ratings) {
+    res.status(400);
+    throw new Error('Please Fill all the feilds');
+  } else {
+    const newProduct = new Product({
+      user: req.user._id,
+      name,
+      description,
+      category,
+      price,
+      ratings,
+      inStock,
+      expressDelivery,
+      // imageUrl: image.url,
+    });
+
+    const createdProduct = await newProduct.save();
+
+    res.status(201).json(createdProduct);
   }
 });
 

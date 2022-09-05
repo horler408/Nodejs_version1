@@ -12,6 +12,8 @@ import SingleNote from './pages/notes/SingleNote';
 import Cart from './pages/products/Cart';
 import MyNotes from './pages/notes/MyNotes';
 import CreateProduct from './pages/products/CreateProductPage';
+import UpdateProduct from './pages/products/UpdateProductPage';
+import AdminProductPage from './pages/admin/AdminProductPage';
 import SingleProduct from './pages/products/SingleProductPage';
 import ProductDetailPage from './pages/products/ProductDetailPage';
 import Products from './pages/products/ProductsPage';
@@ -41,12 +43,14 @@ function App() {
           <Route path="/note/:id" element={<SingleNote />} />
           <Route path="/mynotes" element={<MyNotes search={search} />} />
 
-          <Route path="/createproduct" element={<CreateProduct />} />
+          <Route path="/product/create" element={<CreateProduct />} />
+          <Route path="/product/update/:id" element={<UpdateProduct />} />
+          <Route path="/product/admin" element={<AdminProductPage />} />
           <Route path="/test" element={<TestProduct />} />
           <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/product/cart" element={<Cart />} />
           <Route path="/product/checkout" element={<Checkout />} />
-          <Route path="/product/detail" element={<ProductDetailPage />} />
+          <Route path="/product/detail/:id" element={<ProductDetailPage />} />
           <Route path="/products" element={<Products search={search} />} />
         </Routes>
       </main>

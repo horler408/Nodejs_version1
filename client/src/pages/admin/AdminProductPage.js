@@ -7,7 +7,7 @@ import {
   productDeleteAction,
   productListAction,
 } from '../../actions/productActions';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
 import Loading from '../../components/Loading';
 import MainPage from '../../components/MainPage';
 
@@ -31,21 +31,22 @@ const AdminProductPage = () => {
   useEffect(() => {
     dispatch(productListAction());
 
-    if (!userInfo && !userInfo.isAdmin) {
+    if (!userInfo) {
       navigate('/products');
     }
   }, [dispatch, navigate, userInfo]);
+  console.log(userInfo);
 
   return (
     <MainPage>
       <Card>
-        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {error && <InfoMessage variant="danger">{error}</InfoMessage>}
         {loading && <Loading />}
         {products.map((product) => (
           <table key={product._id}>
             <th>{product.name}</th>
             <div>
-              <Button href={`/product/${product._id}`}>Edit</Button>
+              <Button href={`/product/update/${product._id}`}>Edit</Button>
               <Button
                 variant="danger"
                 className="mx-2"

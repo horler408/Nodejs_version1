@@ -7,9 +7,10 @@ const token = require('../../utils/generateToken.js');
 //@access          Private
 const getUsers = async (req, res) => {
   try {
-    const users = User.find();
+    const users = User.find().select('name email phone isAdmin pic');
     const response = await users;
-    const data = await res.json({ response });
+    const count = response.length;
+    const data = await res.json({ count, response });
 
     return data;
   } catch (error) {

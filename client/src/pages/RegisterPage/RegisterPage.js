@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
+import GradientBar from '../../components/commons/GradientBar';
 import './register.css';
 import { register } from '../../actions/userActions';
 
@@ -65,20 +66,22 @@ const RegisterPage = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     if (password !== confirmpassword) {
       setMessage('Passwords do not match');
     } else {
       dispatch(register(name, email, phone, password, pic));
-      navigate('/mynotes');
+      setTimeout(() => {
+        navigate('/mynotes');
+      }, 700);
     }
   };
 
   return (
     <MainPage title="REGISTER">
       <div className="register-container">
-        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-        {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
+        <GradientBar />
+        {error && <InfoMessage variant="danger">{error}</InfoMessage>}
+        {message && <InfoMessage variant="danger">{message}</InfoMessage>}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
           <Row className="mb-3">
@@ -114,7 +117,7 @@ const RegisterPage = () => {
               />
             </Form.Group>
             {picMessage && (
-              <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+              <InfoMessage variant="danger">{picMessage}</InfoMessage>
             )}
             <Form.Group as={Col} md="6" className="mb-3">
               <Form.Label>Profile Picture</Form.Label>

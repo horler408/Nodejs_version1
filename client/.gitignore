@@ -12,7 +12,7 @@
 /build
 
 # practice redux
-/src/todo_app
+src/todo_app
 /src/context
 
 # testing formik

@@ -21,7 +21,12 @@ import {
   productUpdateReducer,
   productDeleteReducer,
 } from './reducers/productReducers';
-import { itemListReducer } from './actions/itemActions';
+import {
+  cartListReducer,
+  cartGetItemsReducer,
+  cartAddItemReducer,
+  cartRemoveItemReducer,
+} from './reducers/cartReducers';
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -35,12 +40,16 @@ const reducer = combineReducers({
 
   productList: productListReducer,
   productDetail: productDetailReducer,
-  itemList: itemListReducer,
   cartItems: cartReducer,
   productFilter: productFilterReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
+
+  cartList: cartListReducer,
+  cartGetItems: cartGetItemsReducer,
+  cartAddItem: cartAddItemReducer,
+  cartRemoveItem: cartRemoveItemReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

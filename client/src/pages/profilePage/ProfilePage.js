@@ -5,7 +5,7 @@ import './profilePage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../actions/userActions';
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
@@ -75,11 +75,11 @@ const ProfilePage = () => {
             <Form onSubmit={submitHandler}>
               {loading && <Loading />}
               {success && (
-                <ErrorMessage variant="success">
+                <InfoMessage variant="success">
                   Updated Successfully
-                </ErrorMessage>
+                </InfoMessage>
               )}
-              {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+              {error && <InfoMessage variant="danger">{error}</InfoMessage>}
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -126,7 +126,7 @@ const ProfilePage = () => {
                 ></Form.Control>
               </Form.Group>{' '}
               {picMessage && (
-                <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+                <InfoMessage variant="danger">{picMessage}</InfoMessage>
               )}
               <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>Change Profile Picture</Form.Label>

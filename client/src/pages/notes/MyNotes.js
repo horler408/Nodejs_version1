@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNoteAction, listNotesAction } from '../../actions/noteActions';
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import ErrorMessage from '../../components/InfoMessage';
 
 function MyNotes({ search }) {
   const dispatch = useDispatch();

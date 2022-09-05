@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { productListAction } from '../../actions/productActions';
 import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
+import InfoMessage from '../../components/InfoMessage';
 import Filters from '../../components/Filters';
 import SingleProductPage from './SingleProductPage';
 
@@ -62,7 +62,7 @@ const ProductsPage = ({ search }) => {
   return (
     <div className="home">
       <Filters />
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+      {error && <InfoMessage variant="danger">{error}</InfoMessage>}
       {loading && <Loading />}
       <div className="product-container">
         {products &&

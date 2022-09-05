@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNoteAction, updateNoteAction } from '../../actions/noteActions';
-import ErrorMessage from '../../components/ErrorMessage';
+import ErrorMessage from '../../components/InfoMessage';
 import Loading from '../../components/Loading';
 import ReactMarkdown from 'react-markdown';
 import { useNavigate, useParams } from 'react-router-dom';

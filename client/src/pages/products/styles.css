@@ -59,6 +59,11 @@
 .summay {
   width: 30%;
 }
+.navigation-arrow {
+  height: 10vh;
+  background-color: aliceblue;
+  margin-bottom: 20px;
+}
 
 @media (max-with: 771px) {
   .filters {

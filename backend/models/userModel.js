@@ -41,7 +41,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// will encrypt password everytime its saved
+// To encrypt password everytime its saved
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
