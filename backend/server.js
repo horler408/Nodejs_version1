@@ -12,7 +12,7 @@ const noteRoute = require('./v1/routes/notesRoute');
 const productRouteV2 = require('./v2/routes/productRoute');
 const categoryRouteV2 = require('./v2/routes/categoryRoute');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware.js');
-const dbConnect = require('./config/dbRemote.js');
+const dbConnect = require('./config/db.js');
 const cors = require('./config/cors');
 
 dotenv.config();

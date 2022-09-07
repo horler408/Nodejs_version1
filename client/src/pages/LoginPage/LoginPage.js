@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MainPage from '../../components/MainPage';
@@ -16,6 +16,9 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    state: { message },
+  } = useLocation();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
@@ -34,6 +37,7 @@ const LoginPage = () => {
   return (
     <MainPage title="LOGIN">
       <div className="login-container">
+        {message && <InfoMessage variant="danger">{message}</InfoMessage>}
         {error && <InfoMessage variant="danger">{error}</InfoMessage>}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>

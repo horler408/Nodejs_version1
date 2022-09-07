@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, ListGroup, Row, Image } from 'react-bootstrap';
 import { AiFillDelete } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Rating from '../../components/Rating';
 
 const Cart = () => {
@@ -10,13 +10,20 @@ const Cart = () => {
   const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const cartItems = useSelector((state) => state.cartItems);
   const { cart } = cartItems;
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
     setTotal(cart.reduce((acc, cur) => acc + Number(cur.price * qty), 0));
-  }, [cart, qty]);
+  }, [cart, qty, userInfo, navigate]);
 
   return (
     <div className="home">
@@ -45,19 +52,7 @@ const Cart = () => {
                     as="select"
                     value={qty}
                     onChange={(e) => setQty(e.target.value)}
-                    // onChange={(e) =>
-                    //   dispatch({
-                    //     type: 'CHANGE_CART_QTY',
-                    //     payload: {
-                    //       id: cartItem._id,
-                    //       qty: e.target.value,
-                    //     },
-                    //   })
-                    // }
                   >
-                    {/* {[...Array(cartItem.inStock).keys()].map((x) => (
-                      <option key={x + 1}>{x + 1}</option>
-                    ))} */}
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

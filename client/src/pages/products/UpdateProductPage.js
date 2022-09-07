@@ -64,9 +64,6 @@ function UpdateProductPage() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  //   const productCreate = useSelector((state) => state.productCreate);
-  //   const { loading, error } = productCreate;
-
   const productUpdate = useSelector((state) => state.productUpdate);
   const { loading, error, success } = productUpdate;
 
@@ -87,7 +84,7 @@ function UpdateProductPage() {
     if (window.confirm('Are you sure?')) {
       dispatch(productDeleteAction(id));
     }
-    navigate('/mynotes');
+    navigate('/products');
   };
 
   const updateHandler = (e) => {
@@ -117,9 +114,9 @@ function UpdateProductPage() {
   };
 
   useEffect(() => {
-    // if (!userInfo && !userInfo?.isAdmin) {
-    //   navigate('/');
-    // }
+    if (!userInfo && !userInfo?.isAdmin) {
+      navigate('/');
+    }
 
     const fetching = async () => {
       const { data } = await axios.get(`/api/v1/products/${id}`);
@@ -139,9 +136,8 @@ function UpdateProductPage() {
   }, [id, userInfo, navigate]);
 
   return (
-    <MainPage title="Create a Product">
+    <MainPage title="Update a Product">
       <Card>
-        <Card.Header>Create a new Product</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
             {error && <InfoMessage variant="danger">{error}</InfoMessage>}

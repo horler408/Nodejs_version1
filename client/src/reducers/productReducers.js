@@ -72,12 +72,20 @@ export const productUpdateReducer = (state = {}, action) => {
   }
 };
 
-export const productDeleteReducer = (state = {}, action) => {
+export const productDeleteReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case PRODUCT_DELETE_REQUEST:
       return { loading: true };
     case PRODUCT_DELETE_SUCCESS:
-      return { loading: false, success: true };
+      if (state.products) {
+        return {
+          ...state,
+          loading: false,
+          success: true,
+          products: state.products.filter((c) => c._id !== action.payload._id),
+        };
+      }
+      break;
     case PRODUCT_DELETE_FAIL:
       return { loading: false, error: action.payload, success: false };
 

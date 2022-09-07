@@ -11,7 +11,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
 import { AiFillDelete } from 'react-icons/ai';
@@ -38,19 +38,6 @@ function Header({ setSearch }) {
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
         <Navbar.Brand href="/">HorlerTech Store</Navbar.Brand>
-        {/* <Navbar.Text className="search">
-          <FormControl
-            style={{ width: 400 }}
-            placeholder="Search a product"
-            className="m-auto"
-            onClick={(e) => {
-              dispatch({
-                type: 'FILTER_BY_SEARCH',
-                payload: e.target.value,
-              });
-            }}
-          />
-        </Navbar.Text> */}
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -111,7 +98,7 @@ function Header({ setSearch }) {
                 )}
               </Dropdown.Menu>
             </Dropdown>
-
+            <Nav.Link href="/products">My Products</Nav.Link>
             {userInfo ? (
               <>
                 <NavDropdown
@@ -131,13 +118,13 @@ function Header({ setSearch }) {
 
                   <NavDropdown.Divider />
                   <NavDropdown.Item>
-                    <Nav.Link
+                    <NavLink
                       style={{ color: 'inherit' }}
                       className="link"
-                      href="/mynotes"
+                      to="/mynotes"
                     >
                       My Notes
-                    </Nav.Link>
+                    </NavLink>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={logoutHandler}>
@@ -152,7 +139,9 @@ function Header({ setSearch }) {
                 <Nav.Link href="/login">Login</Nav.Link>
               </>
             )}
-            {/* {userInfo.isAdmin ? <Nav.Link href="/admin">Admin</Nav.Link> : null} */}
+            {userInfo?.isAdmin ? (
+              <Nav.Link href="/admin/dashboard">Admin</Nav.Link>
+            ) : null}
           </Nav>
         </Navbar.Collapse>
       </Container>

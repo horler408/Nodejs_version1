@@ -31,18 +31,18 @@ const AdminProductPage = () => {
   useEffect(() => {
     dispatch(productListAction());
 
-    if (!userInfo) {
-      navigate('/products');
-    }
+    // if (!userInfo) {
+    //   navigate('/products');
+    // }
   }, [dispatch, navigate, userInfo]);
-  console.log(userInfo);
+  // console.log(userInfo);
 
   return (
     <MainPage>
-      <Card>
-        {error && <InfoMessage variant="danger">{error}</InfoMessage>}
-        {loading && <Loading />}
-        {products.map((product) => (
+      {error && <InfoMessage variant="danger">{error}</InfoMessage>}
+      {loading && <Loading />}
+      {products &&
+        products.map((product) => (
           <table key={product._id}>
             <th>{product.name}</th>
             <div>
@@ -57,7 +57,6 @@ const AdminProductPage = () => {
             </div>
           </table>
         ))}
-      </Card>
     </MainPage>
   );
 };

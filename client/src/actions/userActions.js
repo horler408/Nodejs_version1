@@ -9,6 +9,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  USER_LIST_FAIL,
+  USER_LIST_SUCCESS,
+  USER_LIST_REQUEST,
 } from '../constants/userConstants';
 import axios from 'axios';
 
@@ -108,6 +111,30 @@ export const updateProfile = (user) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
+    });
+  }
+};
+
+export const userListAction = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    const { data } = await axios.get('/api/v1/users');
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data.response,
+    });
+  } catch (err) {
+    const message =
+      err.response && err.response.data.message
+        ? err.response.data.message
+        : err.message;
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload: message,
     });
   }
 };
