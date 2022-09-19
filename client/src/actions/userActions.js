@@ -12,6 +12,9 @@ import {
   USER_LIST_FAIL,
   USER_LIST_SUCCESS,
   USER_LIST_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
 } from '../constants/userConstants';
 import axios from 'axios';
 
@@ -36,7 +39,7 @@ export const login = (email, password) => async (dispatch) => {
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (err) {
     dispatch({
-      USER_LOGIN_FAIL,
+      type: USER_LOGIN_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message
@@ -48,10 +51,11 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
+  document.location.href = '/login';
 };
 
 export const register =
-  (name, email, phone, password, pic) => async (dispatch) => {
+  (name, email, phone, password, gender, address, pic) => async (dispatch) => {
     try {
       dispatch({ type: USER_REGISTER_REQUEST });
 
@@ -62,8 +66,8 @@ export const register =
       };
 
       const { data } = await axios.post(
-        '/api/v1/users',
-        { name, pic, phone, email, password },
+        '/api/v1/users/register',
+        { name, phone, email, gender, address, pic, password },
         config
       );
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
@@ -134,6 +138,40 @@ export const userListAction = () => async (dispatch) => {
         : err.message;
     dispatch({
       type: USER_LIST_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const userDeleteAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(`/api/v1/users/delete/${id}`, config);
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload: message,
     });
   }

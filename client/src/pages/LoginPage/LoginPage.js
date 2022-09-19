@@ -16,9 +16,9 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    state: { message },
-  } = useLocation();
+  const location = useLocation();
+
+  const redirect = location.search ? location.search.split('=')[1] : '/';
 
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
@@ -30,14 +30,16 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/mynotes');
+      navigate('/user/dashboard');
     }
   }, [navigate, userInfo]);
 
   return (
     <MainPage title="LOGIN">
       <div className="login-container">
-        {message && <InfoMessage variant="danger">{message}</InfoMessage>}
+        {location && (
+          <InfoMessage variant="danger">{location.state?.message}</InfoMessage>
+        )}
         {error && <InfoMessage variant="danger">{error}</InfoMessage>}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>

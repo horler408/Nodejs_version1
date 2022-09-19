@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { auth } = require('../../middleware/authMiddleware');
+// const upload = require('../../middleware/multer');
 
 const {
   getUsers,
@@ -13,10 +14,10 @@ const {
 } = require('../controllers/userController');
 
 router.get('/', getUsers);
-router.get('/:_id', getUser);
+router.get('/:id', getUser);
 router.post('/login', authUser);
-router.post('/', registerUser);
+router.post('/register', registerUser);
 router.post('/profile', auth, updateUserProfile);
-router.post('/delete/:_id', deleteUser);
+router.post('/delete/:id', auth, deleteUser);
 
 module.exports = router;

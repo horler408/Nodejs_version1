@@ -12,26 +12,29 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
 import { AiFillDelete } from 'react-icons/ai';
 
 import { logout } from '../actions/userActions';
 
 function Header({ setSearch }) {
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const cartItems = useSelector((state) => state.cartItems);
-  const { cart } = cartItems;
+  const getCartItems = useSelector((state) => state.getCartItems);
+  const { cartItems } = getCartItems;
+  console.log(cartItems);
 
   const logoutHandler = () => {
     dispatch(logout());
-    navigate('/');
+  };
+
+  const cartCount = (items) => {
+    if (items && items.userId !== '') {
+      return items.items?.length;
+    }
   };
 
   return (
@@ -57,13 +60,13 @@ function Header({ setSearch }) {
             <Dropdown>
               <Dropdown.Toggle>
                 <FaShoppingCart color="white" fontSize="25px" />
-                <Badge className="mx-2">{cart.length}</Badge>
+                <Badge className="mx-2">{cartCount(cartItems)}</Badge>
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ maxWidth: 700 }}>
-                {cart.length > 0 ? (
+                {cartItems && cartItems.length > 0 ? (
                   <>
-                    {cart.map((cartItem) => (
+                    {cartItems.map((cartItem) => (
                       <span className="cart-item" key={cartItem._id}>
                         <img
                           src={cartItem.imageUrl}
@@ -98,7 +101,7 @@ function Header({ setSearch }) {
                 )}
               </Dropdown.Menu>
             </Dropdown>
-            <Nav.Link href="/products">My Products</Nav.Link>
+            <Nav.Link href="/products">Products Shopping</Nav.Link>
             {userInfo ? (
               <>
                 <NavDropdown
@@ -127,6 +130,16 @@ function Header({ setSearch }) {
                     </NavLink>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
+                  <NavDropdown.Item>
+                    <NavLink
+                      style={{ color: 'inherit' }}
+                      className="link"
+                      to="/user/dashboard"
+                    >
+                      Dashboard
+                    </NavLink>
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
@@ -134,7 +147,7 @@ function Header({ setSearch }) {
               </>
             ) : (
               <>
-                <Nav.Link href="/products">My Products</Nav.Link>
+                <Nav.Link href="/products">Products Shopping</Nav.Link>
 
                 <Nav.Link href="/login">Login</Nav.Link>
               </>

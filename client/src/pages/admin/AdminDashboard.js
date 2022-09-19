@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Col, Image, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import Loading from '../../components/Loading';
 import InfoMessage from '../../components/InfoMessage';
 import MainPage from '../../components/MainPage';
 import { userListAction, userDeleteAction } from '../../actions/userActions';
-import { useNavigate } from 'react-router-dom';
 import {
   productDeleteAction,
   productListAction,
 } from '../../actions/productActions';
+import { listCartsAction } from '../../actions/cartActions';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -25,9 +26,19 @@ const Dashboard = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
 
-  const deleteHandler = (id) => {
+  const listCarts = useSelector((state) => state.listCarts);
+  const { carts } = listCarts;
+
+  const productDeleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
       dispatch(productDeleteAction(id));
+    }
+    navigate('/admin/dashboard');
+  };
+
+  const userDeleteHandler = (id) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(userDeleteAction(id));
     }
     navigate('/admin/dashboard');
   };
@@ -40,6 +51,7 @@ const Dashboard = () => {
     }
     dispatch(userListAction());
     dispatch(productListAction());
+    dispatch(listCartsAction);
   }, [dispatch, navigate, userInfo]);
 
   return (
@@ -75,7 +87,7 @@ const Dashboard = () => {
                   <Button
                     variant="danger"
                     className="mx-2 my-2"
-                    onClick={() => deleteHandler(product._id)}
+                    onClick={() => productDeleteHandler(product._id)}
                   >
                     Delete
                   </Button>
@@ -95,7 +107,7 @@ const Dashboard = () => {
             <Col key={user._id}>
               <Card className="admin-item">
                 <Image
-                  src={user.imageUrl}
+                  src={user.pic}
                   alt={user.name}
                   className="admin-item-img"
                 />
@@ -107,11 +119,11 @@ const Dashboard = () => {
                   </Card.Body>
                 </div>
                 <div>
-                  <Button href={`/product/update/${user._id}`}>Edit</Button>
+                  <Button href={'/profile'}>Edit</Button>
                   <Button
                     variant="danger"
                     className="mx-2 my-2"
-                    onClick={() => deleteHandler(user._id)}
+                    onClick={() => userDeleteHandler(user._id)}
                   >
                     Delete
                   </Button>
@@ -120,6 +132,7 @@ const Dashboard = () => {
             </Col>
           ))}
       </Row>
+      <Row>{carts && carts.map((cart) => <Col>{cart.name}</Col>)}</Row>
     </MainPage>
   );
 };

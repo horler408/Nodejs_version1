@@ -7,7 +7,9 @@ const token = require('../../utils/generateToken.js');
 //@access          Private
 const getUsers = async (req, res) => {
   try {
-    const users = User.find().select('name email phone isAdmin pic');
+    const users = User.find().select(
+      'name email phone gender address isAdmin pic'
+    );
     const response = await users;
     const count = response.length;
     const data = await res.json({ count, response });
@@ -29,7 +31,7 @@ const getUser = async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      pic: user.pic,
+      imageUrl: user.pic || user.imageUrl,
       isAdmin: user.isAdmin,
       token: token.generateToken(user._id),
     });
@@ -52,6 +54,9 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      gender: user.gender,
+      address: user.address,
       isAdmin: user.isAdmin,
       pic: user.pic,
       token: token.generateToken(user._id),
@@ -66,7 +71,8 @@ const authUser = asyncHandler(async (req, res) => {
 //@route           POST /api/users/
 //@access          Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, pic, phone, isAdmin } = req.body;
+  const { name, email, password, gender, address, phone, pic, isAdmin } =
+    req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -79,9 +85,11 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     phone,
+    gender,
+    address,
     password,
-    isAdmin,
     pic,
+    isAdmin,
   });
 
   if (user) {
@@ -90,6 +98,8 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
+      gender: user.gender,
+      address: user.address,
       isAdmin: user.isAdmin,
       pic: user.pic,
       token: token.generateToken(user._id),
@@ -106,7 +116,8 @@ const registerUser = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  const { name, email, pic, password, phone, isAdmin } = req.body;
+  const { name, email, gender, address, pic, password, phone, isAdmin } =
+    req.body;
 
   if (req.user.email === email) {
     throw new Error('Email already exists, Cannot update');
@@ -115,6 +126,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = name || user.name;
     user.email = email || user.email;
     user.phone = phone || user.phone;
+    user.gender = gender || user.gender;
+    user.address = address || user.address;
     user.isAdmin = isAdmin || user.isAdmin;
     user.pic = pic || user.pic;
     if (password) {
@@ -128,6 +141,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       phone: updatedUser.phone,
+      gender: updatedUser.gender,
+      address: updatedUser.address,
       pic: updatedUser.pic,
       isAdmin: updatedUser.isAdmin,
       token: token.generateToken(updatedUser._id),

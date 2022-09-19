@@ -14,6 +14,8 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState('');
+  const [address, setAddress] = useState('');
   const [pic, setPic] = useState(
     'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'
   );
@@ -58,20 +60,23 @@ const RegisterPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate('/');
-    }
-  }, [navigate, userInfo]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     navigate('/');
+  //   }
+  // }, [navigate, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmpassword) {
+    if (!name || !email || !phone || !address || !gender || !pic || !password) {
+      setMessage('All fields must be filled!');
+    } else if (password !== confirmpassword) {
       setMessage('Passwords do not match');
+      return;
     } else {
-      dispatch(register(name, email, phone, password, pic));
+      dispatch(register(name, email, phone, gender, address, password, pic));
       setTimeout(() => {
-        navigate('/mynotes');
+        navigate('/login');
       }, 700);
     }
   };
@@ -102,6 +107,31 @@ const RegisterPage = () => {
                 value={email}
                 placeholder="Enter email"
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+          </Row>
+          <Row className="mb-3">
+            <Form.Group as={Col} md="6" controlId="gender">
+              <Form.Label>Gender</Form.Label>
+              <Form.Control
+                as="select"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option value="">Choose..</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Shemale">Undecided</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group as={Col} md="6" controlId="formBasicAddress">
+              <Form.Label>Home Address</Form.Label>
+              <Form.Control
+                type="text"
+                value={address}
+                placeholder="1, Otitoju street Ikeja, Lagos"
+                onChange={(e) => setAddress(e.target.value)}
               />
             </Form.Group>
           </Row>

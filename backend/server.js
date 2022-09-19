@@ -28,8 +28,8 @@ app.use(cors);
 
 app.use('/api/v1/users', userRoute);
 app.use('/api/v1/products', productRoute);
-app.use('/api/v1/order', orderRoute);
-app.use('/api/v1/cart', cartRoute);
+app.use('/api/v1/orders', orderRoute);
+app.use('/api/v1/carts', cartRoute);
 app.use('/api/v1/notes', noteRoute);
 
 // Version 2 routes

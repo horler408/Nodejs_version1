@@ -24,8 +24,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './pages/products/Checkout';
 // const MyNotes = React.lazy(() => import('./pages/myNotes/MyNotes'));
 // const LandingPage = React.lazy(() => import('./pages/landingPage/LandingPage'));
-import TestProduct from './pages/products/TestProduct';
-import Dashboard from './pages/admin/Dashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import UserDashboard from './pages/users/UserDashboard';
 
 function App() {
   const [search, setSearch] = useState('');
@@ -40,7 +40,8 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
 
           <Route path="/createnote" element={<CreateNote />} />
           <Route path="/note/:id" element={<SingleNote />} />
@@ -49,7 +50,6 @@ function App() {
           <Route path="/product/create" element={<CreateProduct />} />
           <Route path="/product/update/:id" element={<UpdateProduct />} />
           <Route path="/admin/product" element={<AdminProductPage />} />
-          <Route path="/test" element={<TestProduct />} />
           <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/product/cart" element={<Cart />} />
           <Route path="/product/checkout" element={<Checkout />} />

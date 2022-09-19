@@ -5,9 +5,9 @@ import {
   GET_CART_FAIL,
   GET_CART_REQUEST,
   GET_CART_SUCCESS,
-  LIST_CARTS_FAIL,
-  LIST_CARTS_REQUEST,
-  LIST_CARTS_SUCCESS,
+  LIST_CART_FAIL,
+  LIST_CART_REQUEST,
+  LIST_CART_SUCCESS,
   REMOVE_FROM_CART_FAIL,
   REMOVE_FROM_CART_REQUEST,
   REMOVE_FROM_CART_SUCCESS,
@@ -15,11 +15,11 @@ import {
 
 export const cartListReducer = (state = { carts: [] }, action) => {
   switch (action.type) {
-    case LIST_CARTS_REQUEST:
+    case LIST_CART_REQUEST:
       return { loading: true };
-    case LIST_CARTS_SUCCESS:
+    case LIST_CART_SUCCESS:
       return { loading: false, carts: action.payload };
-    case LIST_CARTS_FAIL:
+    case LIST_CART_FAIL:
       return { loading: false, error: action.payload };
 
     default:
@@ -27,12 +27,12 @@ export const cartListReducer = (state = { carts: [] }, action) => {
   }
 };
 
-export const cartGetItemsReducer = (state = { cart: {} }, action) => {
+export const cartGetItemsReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case GET_CART_REQUEST:
       return { loading: true };
     case GET_CART_SUCCESS:
-      return { loading: false, cart: action.payload };
+      return { loading: false, cartItems: action.payload };
     case GET_CART_FAIL:
       return { loading: false, error: action.payload };
 
@@ -64,35 +64,6 @@ export const cartRemoveItemReducer = (state = {}, action) => {
     case REMOVE_FROM_CART_FAIL:
       return { loading: false, success: false, error: action.payload };
 
-    default:
-      return state;
-  }
-};
-
-export const cartReducer = (state, action) => {
-  switch (action.type) {
-    case 'CART_REQUEST':
-      return { loading: true };
-    case 'ADD_TO_CART':
-      return {
-        ...state,
-        loading: false,
-        cart: [...state.cart, { ...action.payload, qty: 1 }],
-      };
-    case 'REMOVE_FROM_CART':
-      return {
-        ...state,
-        loading: false,
-        cart: state.cart.filter((c) => c.id !== action.payload.id),
-      };
-    case 'CHANGE_CART_QTY':
-      return {
-        ...state,
-        loading: false,
-        cart: state.cart.filter((c) =>
-          c.id === action.payload.id ? (c.qty = action.payload.qty) : c.qty
-        ),
-      };
     default:
       return state;
   }
